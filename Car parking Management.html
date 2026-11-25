@@ -1,0 +1,1332 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LPU Campus Parking System - 2000 Slots Mini-Project</title>
+
+  <!-- Clean, readable CSS styled for a 1st year college mini-project -->
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    body {
+      background-color: #f4f6f9;
+      color: #333;
+      line-height: 1.6;
+      padding-bottom: 50px;
+    }
+
+    /* LPU Orange and Navy Header */
+    header {
+      background: linear-gradient(135deg, #e35205, #ff6b22);
+      color: white;
+      padding: 24px 20px;
+      text-align: center;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+    }
+
+    header h1 {
+      font-size: 26px;
+      margin-bottom: 4px;
+      letter-spacing: 0.5px;
+    }
+
+    header p {
+      font-size: 14px;
+      color: #fff2e6;
+    }
+
+    .project-tag {
+      display: inline-block;
+      margin-top: 8px;
+      background: rgba(255, 255, 255, 0.2);
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: bold;
+    }
+
+    /* Main Container */
+    .container {
+      max-width: 1200px;
+      margin: 24px auto;
+      padding: 0 16px;
+    }
+
+    /* Stats Overview Cards */
+    .stats-row {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+
+    .stat-card {
+      background: white;
+      padding: 16px;
+      border-radius: 10px;
+      text-align: center;
+      border: 1px solid #e0e0e0;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+    }
+
+    .stat-card h3 {
+      font-size: 13px;
+      color: #666;
+      text-transform: uppercase;
+      margin-bottom: 6px;
+    }
+
+    .stat-card .number {
+      font-size: 28px;
+      font-weight: bold;
+      color: #1a2a3a;
+    }
+
+    .stat-green { border-top: 4px solid #28a745; }
+    .stat-red { border-top: 4px solid #dc3545; }
+    .stat-orange { border-top: 4px solid #e35205; }
+    .stat-blue { border-top: 4px solid #007bff; }
+
+    /* Zone occupancy cards */
+    .zone-summary-bar {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+      gap: 12px;
+      margin-bottom: 24px;
+    }
+
+    .zone-pill {
+      background: white;
+      padding: 12px 14px;
+      border-radius: 8px;
+      border: 1px solid #e0e0e0;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+      font-size: 12px;
+    }
+
+    .zone-pill-header {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 4px;
+      font-weight: bold;
+      color: #222;
+    }
+
+    .progress-bar-bg {
+      background: #e9ecef;
+      height: 8px;
+      border-radius: 4px;
+      overflow: hidden;
+      margin-top: 6px;
+    }
+
+    .progress-bar-fill {
+      background: #e35205;
+      height: 100%;
+      width: 0%;
+      transition: width 0.3s;
+    }
+
+    /* Layout Sections */
+    .grid-2col {
+      display: grid;
+      grid-template-columns: 380px 1fr;
+      gap: 24px;
+      margin-bottom: 24px;
+    }
+
+    @media (max-width: 900px) {
+      .grid-2col {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .card {
+      background: white;
+      border-radius: 10px;
+      padding: 20px;
+      border: 1px solid #e0e0e0;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+    }
+
+    .card h2 {
+      font-size: 18px;
+      color: #1a2a3a;
+      margin-bottom: 16px;
+      padding-bottom: 8px;
+      border-bottom: 2px solid #ffefe5;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    /* Form Styles */
+    .form-group {
+      margin-bottom: 12px;
+    }
+
+    label {
+      display: block;
+      font-size: 13px;
+      font-weight: 600;
+      color: #444;
+      margin-bottom: 4px;
+    }
+
+    input[type="text"],
+    input[type="number"],
+    select {
+      width: 100%;
+      padding: 9px 12px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      font-size: 14px;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    input[type="text"]:focus,
+    input[type="number"]:focus,
+    select:focus {
+      border-color: #e35205;
+    }
+
+    .btn {
+      display: inline-block;
+      background: #e35205;
+      color: white;
+      border: none;
+      padding: 11px 18px;
+      border-radius: 6px;
+      font-size: 14px;
+      font-weight: bold;
+      cursor: pointer;
+      width: 100%;
+      transition: background 0.2s;
+    }
+
+    .btn:hover {
+      background: #c74300;
+    }
+
+    .btn-secondary {
+      background: #6c757d;
+      margin-top: 8px;
+    }
+
+    .btn-secondary:hover {
+      background: #5a6268;
+    }
+
+    /* Zone Switcher Tabs */
+    .zone-tabs {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-bottom: 14px;
+      border-bottom: 1px solid #e0e0e0;
+      padding-bottom: 8px;
+    }
+
+    .zone-tab-btn {
+      padding: 7px 12px;
+      font-size: 12px;
+      font-weight: bold;
+      border: 1px solid #ddd;
+      border-radius: 6px;
+      background: #f8f9fa;
+      cursor: pointer;
+      color: #555;
+      transition: all 0.2s;
+    }
+
+    .zone-tab-btn.active {
+      background: #e35205;
+      color: white;
+      border-color: #e35205;
+    }
+
+    /* Pagination Bar for Slots (prevents browser lag with 2000 items) */
+    .slot-controls {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 12px;
+      background: #fdf6f2;
+      padding: 8px 12px;
+      border-radius: 6px;
+      font-size: 12px;
+    }
+
+    .pagination-buttons {
+      display: flex;
+      gap: 6px;
+      align-items: center;
+    }
+
+    .page-btn {
+      background: white;
+      border: 1px solid #ccc;
+      padding: 4px 10px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-weight: bold;
+      font-size: 12px;
+    }
+
+    .page-btn:hover:not(:disabled) {
+      background: #e35205;
+      color: white;
+      border-color: #e35205;
+    }
+
+    .page-btn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    .slot-jump-input {
+      width: 75px !important;
+      padding: 4px 8px !important;
+      font-size: 12px !important;
+      display: inline-block;
+    }
+
+    /* Visual Parking Slots Grid (50 slots per active page) */
+    .slots-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+      gap: 8px;
+      max-height: 380px;
+      overflow-y: auto;
+      padding-right: 4px;
+    }
+
+    .slot-box {
+      border-radius: 6px;
+      padding: 8px 4px;
+      text-align: center;
+      font-weight: bold;
+      font-size: 12px;
+      cursor: pointer;
+      transition: transform 0.15s, box-shadow 0.15s;
+      border: 1px solid rgba(0,0,0,0.12);
+      user-select: none;
+    }
+
+    .slot-box:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 3px 8px rgba(0,0,0,0.15);
+    }
+
+    .slot-box.selected {
+      outline: 3px solid #ff9900;
+    }
+
+    .slot-vacant {
+      background-color: #d4edda;
+      color: #155724;
+      border-color: #c3e6cb;
+    }
+
+    .slot-occupied {
+      background-color: #f8d7da;
+      color: #721c24;
+      border-color: #f5c6cb;
+    }
+
+    .legend {
+      display: flex;
+      justify-content: center;
+      gap: 16px;
+      font-size: 12px;
+      margin-top: 14px;
+      padding-top: 8px;
+      border-top: 1px solid #eee;
+    }
+
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .color-dot {
+      width: 12px;
+      height: 12px;
+      border-radius: 3px;
+      display: inline-block;
+    }
+
+    /* Table Styles */
+    .table-container {
+      overflow-x: auto;
+    }
+
+    .search-bar {
+      margin-bottom: 12px;
+      display: flex;
+      gap: 10px;
+    }
+
+    .search-bar input {
+      flex: 1;
+      padding: 8px 12px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      font-size: 13px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+      text-align: left;
+    }
+
+    th, td {
+      padding: 10px 12px;
+      border-bottom: 1px solid #eee;
+    }
+
+    th {
+      background-color: #f9fafb;
+      color: #555;
+      font-weight: 600;
+    }
+
+    tr:hover {
+      background-color: #fdf6f2;
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 3px 8px;
+      border-radius: 12px;
+      font-size: 11px;
+      font-weight: bold;
+    }
+
+    .badge-student { background: #e0f2fe; color: #0284c7; }
+    .badge-faculty { background: #fef3c7; color: #b45309; }
+    .badge-visitor { background: #fee2e2; color: #b91c1c; }
+
+    .btn-action {
+      background: #dc3545;
+      color: white;
+      border: none;
+      padding: 4px 10px;
+      border-radius: 4px;
+      font-size: 12px;
+      cursor: pointer;
+    }
+
+    .btn-action:hover {
+      background: #bd2130;
+    }
+
+    .no-data {
+      text-align: center;
+      padding: 24px;
+      color: #888;
+      font-style: italic;
+    }
+
+    /* Modal / Slip Receipt */
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.5);
+      justify-content: center;
+      align-items: center;
+      z-index: 100;
+    }
+
+    .receipt-box {
+      background: white;
+      border-radius: 10px;
+      max-width: 400px;
+      width: 90%;
+      padding: 24px;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+      border-top: 6px solid #e35205;
+      text-align: center;
+    }
+
+    .receipt-box h3 {
+      font-size: 18px;
+      color: #e35205;
+      margin-bottom: 4px;
+    }
+
+    .receipt-box p.sub {
+      font-size: 12px;
+      color: #666;
+      margin-bottom: 16px;
+    }
+
+    .receipt-details {
+      text-align: left;
+      font-size: 13px;
+      background: #fafafa;
+      padding: 12px;
+      border-radius: 6px;
+      border: 1px dashed #ccc;
+      margin-bottom: 16px;
+    }
+
+    .receipt-row {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 6px;
+    }
+
+    .receipt-row span.label {
+      color: #777;
+    }
+
+    .receipt-row span.value {
+      font-weight: bold;
+      color: #222;
+    }
+
+    .total-fee {
+      border-top: 1px solid #ddd;
+      padding-top: 6px;
+      font-size: 14px;
+      color: #e35205;
+    }
+
+    /* Custom Toast Notification */
+    #notification {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background: #28a745;
+      color: white;
+      padding: 12px 20px;
+      border-radius: 6px;
+      font-size: 13px;
+      font-weight: bold;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+      display: none;
+      z-index: 200;
+    }
+
+    footer {
+      text-align: center;
+      font-size: 12px;
+      color: #777;
+      margin-top: 40px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Top Header with LPU Branding -->
+  <header>
+    <h1>Lovely Professional University (LPU)</h1>
+    <p>Campus Parking Management System - UniPark Portal (2,000 Slots Infrastructure)</p>
+    <div class="project-tag">Computer Science & Engineering 1st-Year Mini Project</div>
+  </header>
+
+  <div class="container">
+
+    <!-- 1. Real-Time Stats Overview (2,000 Slots total) -->
+    <div class="stats-row">
+      <div class="stat-card stat-blue">
+        <h3>Total Campus Slots</h3>
+        <div class="number" id="statTotal">2000</div>
+      </div>
+      <div class="stat-card stat-green">
+        <h3>Available Slots</h3>
+        <div class="number" id="statAvailable">2000</div>
+      </div>
+      <div class="stat-card stat-red">
+        <h3>Occupied Slots</h3>
+        <div class="number" id="statOccupied">0</div>
+      </div>
+      <div class="stat-card stat-orange">
+        <h3>Revenue Collected</h3>
+        <div class="number" id="statRevenue">₹0</div>
+      </div>
+    </div>
+
+    <!-- Zone Summary Bars (500 slots each) -->
+    <div class="zone-summary-bar">
+      <div class="zone-pill">
+        <div class="zone-pill-header">
+          <span>Zone A: Block 33/34 Faculty</span>
+          <span id="zoneOccupancyA">0 / 500</span>
+        </div>
+        <div class="progress-bar-bg"><div id="zoneBarA" class="progress-bar-fill"></div></div>
+      </div>
+      <div class="zone-pill">
+        <div class="zone-pill-header">
+          <span>Zone B: UniMall Commercial</span>
+          <span id="zoneOccupancyB">0 / 500</span>
+        </div>
+        <div class="progress-bar-bg"><div id="zoneBarB" class="progress-bar-fill"></div></div>
+      </div>
+      <div class="zone-pill">
+        <div class="zone-pill-header">
+          <span>Zone C: BH/GH Student Cars</span>
+          <span id="zoneOccupancyC">0 / 500</span>
+        </div>
+        <div class="progress-bar-bg"><div id="zoneBarC" class="progress-bar-fill"></div></div>
+      </div>
+      <div class="zone-pill">
+        <div class="zone-pill-header">
+          <span>Zone D: 2-Wheeler Plaza</span>
+          <span id="zoneOccupancyD">0 / 500</span>
+        </div>
+        <div class="progress-bar-bg"><div id="zoneBarD" class="progress-bar-fill"></div></div>
+      </div>
+    </div>
+
+    <!-- 2-Column Section: Entry Form & Interactive Parking Grid -->
+    <div class="grid-2col">
+
+      <!-- Form for Vehicle Check-in -->
+      <div class="card">
+        <h2>
+          <span>🚗 Park a Vehicle</span>
+          <small style="font-size: 11px; font-weight: normal; color: #888;">Entry Gate</small>
+        </h2>
+
+        <form id="parkingForm" onsubmit="handleParkingSubmit(event)">
+          
+          <div class="form-group">
+            <label for="driverName">Driver / Student Name *</label>
+            <input type="text" id="driverName" placeholder="e.g., Rohan Kumar" required>
+          </div>
+
+          <div class="form-group">
+            <label for="regRollNo">LPU Reg No / Roll No / ID *</label>
+            <input type="text" id="regRollNo" placeholder="e.g., 12108934 (or Visitor Phone)" required>
+          </div>
+
+          <div class="form-group">
+            <label for="userType">Category *</label>
+            <select id="userType" onchange="autoSelectZoneByCategory(); updateFeeInfo();">
+              <option value="Student">LPU Student (Free)</option>
+              <option value="Faculty">Faculty & Staff (Free)</option>
+              <option value="Visitor">Outside Visitor (₹20 Fee)</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="vehicleType">Vehicle Type *</label>
+            <select id="vehicleType" onchange="autoSelectZoneByCategory()">
+              <option value="4-Wheeler">4-Wheeler (Car / SUV)</option>
+              <option value="2-Wheeler">2-Wheeler (Bike / Scooter)</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="targetZone">Target Parking Zone *</label>
+            <select id="targetZone" onchange="switchZone(this.value)">
+              <option value="A">Zone A: Block 33/34 Faculty (Slots 1 - 500)</option>
+              <option value="B">Zone B: UniMall Commercial (Slots 501 - 1000)</option>
+              <option value="C" selected>Zone C: BH/GH Student Cars (Slots 1001 - 1500)</option>
+              <option value="D">Zone D: 2-Wheeler Plaza (Slots 1501 - 2000)</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="plateNumber">Vehicle Number Plate *</label>
+            <input type="text" id="plateNumber" placeholder="e.g., PB 08 AB 1234" required style="text-transform: uppercase;">
+          </div>
+
+          <div class="form-group">
+            <label for="campusGate">Campus Entry Gate *</label>
+            <select id="campusGate">
+              <option value="Gate 1 (GT Road)">Gate 1 (GT Road Main Gate)</option>
+              <option value="Gate 2 (Law Gate)">Gate 2 (Law Gate)</option>
+              <option value="UniMall Entrance">UniMall Parking Gate</option>
+              <option value="Block 34 (Academic)">Block 34 Faculty Gate</option>
+              <option value="BH/GH Hostel Ground">BH/GH Hostels Bay</option>
+            </select>
+          </div>
+
+          <div class="form-group" style="background:#fdf6f2; padding:8px 10px; border-radius:6px;">
+            <label style="margin-bottom:0; font-size:12px; color:#e35205;">
+              Pre-Selected Bay: <strong id="preselectedBayLabel">Auto (Next Available)</strong>
+            </label>
+          </div>
+
+          <button type="submit" class="btn">Park Vehicle & Print Slip</button>
+        </form>
+      </div>
+
+      <!-- Live Parking Slots Grid with Zone Tabs & Batch Pagination -->
+      <div class="card">
+        <h2>
+          <span>🅿️ Live Bays Explorer</span>
+          <small style="font-size: 11px; font-weight: normal; color: #888;">50 bays per batch</small>
+        </h2>
+        
+        <!-- Zone Tabs -->
+        <div class="zone-tabs">
+          <button class="zone-tab-btn" id="tabA" onclick="switchZone('A')">Zone A (1-500)</button>
+          <button class="zone-tab-btn" id="tabB" onclick="switchZone('B')">Zone B (501-1000)</button>
+          <button class="zone-tab-btn active" id="tabC" onclick="switchZone('C')">Zone C (1001-1500)</button>
+          <button class="zone-tab-btn" id="tabD" onclick="switchZone('D')">Zone D (1501-2000)</button>
+        </div>
+
+        <!-- Pagination & Slot Jump Controls (prevents 2,000 DOM lags) -->
+        <div class="slot-controls">
+          <div class="pagination-buttons">
+            <button class="page-btn" id="btnPrevPage" onclick="changePage(-1)">◀ Prev</button>
+            <span id="pageIndicator" style="font-weight:bold;">Page 1 of 10</span>
+            <button class="page-btn" id="btnNextPage" onclick="changePage(1)">Next ▶</button>
+          </div>
+          <div>
+            <span>Jump to Slot #: </span>
+            <input type="number" id="jumpSlotInput" class="slot-jump-input" placeholder="e.g. 1042" min="1" max="2000">
+            <button class="page-btn" onclick="jumpToSlot()">Go</button>
+          </div>
+        </div>
+
+        <!-- 50 Bays dynamically displayed at a time for optimal browser speed -->
+        <div class="slots-grid" id="slotsGrid">
+          <!-- Populated by renderCurrentZoneSlots() -->
+        </div>
+
+        <div class="legend">
+          <div class="legend-item">
+            <span class="color-dot" style="background: #28a745;"></span>
+            <span>Available</span>
+          </div>
+          <div class="legend-item">
+            <span class="color-dot" style="background: #dc3545;"></span>
+            <span>Occupied</span>
+          </div>
+          <div class="legend-item">
+            <span class="color-dot" style="background: #ff9900;"></span>
+            <span>Selected</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- 3. Current Parked Vehicles Table -->
+    <div class="card">
+      <h2>
+        <span>📋 Campus Parked Vehicles Ledger</span>
+        <span id="activeCountBadge" style="font-size: 12px; background: #e35205; color: white; padding: 2px 8px; border-radius: 12px;">0 Vehicles</span>
+      </h2>
+
+      <!-- Search bar -->
+      <div class="search-bar">
+        <input type="text" id="searchInput" placeholder="🔍 Search by Vehicle Plate, Roll No, Driver Name, or Bay Slot #..." onkeyup="filterVehicles()">
+        <button class="btn" style="width: auto; padding: 8px 16px;" onclick="resetSearch()">Clear</button>
+      </div>
+
+      <div class="table-container">
+        <table>
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Bay No.</th>
+              <th>Zone</th>
+              <th>Driver Name</th>
+              <th>Roll / Reg No</th>
+              <th>Vehicle Plate</th>
+              <th>Category</th>
+              <th>Gate</th>
+              <th>In-Time</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody id="vehicleTableBody">
+            <!-- Dynamically populated rows -->
+          </tbody>
+        </table>
+        <div id="noDataMessage" class="no-data">No vehicles are currently parked on campus.</div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- 4. Parking Receipt / Slip Modal -->
+  <div class="modal-overlay" id="receiptModal">
+    <div class="receipt-box">
+      <h3>Lovely Professional University</h3>
+      <p class="sub">UniPark Campus Security Slip</p>
+
+      <div class="receipt-details">
+        <div class="receipt-row">
+          <span class="label">Slip ID:</span>
+          <span class="value" id="rcptSlipId">LPU-101</span>
+        </div>
+        <div class="receipt-row">
+          <span class="label">Allocated Bay:</span>
+          <span class="value" id="rcptBay" style="color: #e35205;">Slot #1001 (Zone C)</span>
+        </div>
+        <div class="receipt-row">
+          <span class="label">Driver Name:</span>
+          <span class="value" id="rcptDriver">Rohan Kumar</span>
+        </div>
+        <div class="receipt-row">
+          <span class="label">Roll / Reg No:</span>
+          <span class="value" id="rcptRoll">12108934</span>
+        </div>
+        <div class="receipt-row">
+          <span class="label">Vehicle No:</span>
+          <span class="value" id="rcptPlate">PB 08 AB 1234</span>
+        </div>
+        <div class="receipt-row">
+          <span class="label">Category:</span>
+          <span class="value" id="rcptCategory">Student</span>
+        </div>
+        <div class="receipt-row">
+          <span class="label">Entry Gate:</span>
+          <span class="value" id="rcptGate">Gate 1</span>
+        </div>
+        <div class="receipt-row">
+          <span class="label">Check-in Time:</span>
+          <span class="value" id="rcptTime">10:30 AM</span>
+        </div>
+        <div class="receipt-row total-fee">
+          <span class="label">Tariff Fee:</span>
+          <span class="value" id="rcptFee">₹0 (Free)</span>
+        </div>
+      </div>
+
+      <button class="btn" onclick="window.print()">Print Slip</button>
+      <button class="btn btn-secondary" onclick="closeReceipt()">Close</button>
+    </div>
+  </div>
+
+  <!-- Toast Notification -->
+  <div id="notification">Action successful!</div>
+
+  <!-- Footer -->
+  <footer>
+    <p>© 2026 Lovely Professional University (LPU), Phagwara, Punjab. CSE Web Development Mini-Project.</p>
+  </footer>
+
+  <!-- ==================== 1ST-YEAR LEVEL JAVASCRIPT ==================== -->
+  <script>
+    /* 
+      LPU CAMPUS PARKING SYSTEM - 2,000 SLOTS ARCHITECTURE
+      - Total slots: 2,000 (divided into 4 zones with 500 slots each)
+      - Zone A: 1 to 500 (Block 33/34 Faculty & Admin)
+      - Zone B: 501 to 1000 (UniMall & Visitor Commercial Bay)
+      - Zone C: 1001 to 1500 (BH/GH Student Car Parking)
+      - Zone D: 1501 to 2000 (Campus 2-Wheeler Plaza)
+      - Batched display: 50 slots per view so the browser never lags!
+    */
+
+    const TOTAL_SLOTS = 2000;
+    const SLOTS_PER_ZONE = 500;
+    const SLOTS_PER_PAGE = 50;
+
+    // Zone Definitions
+    const ZONES = {
+      'A': { name: 'Zone A (Faculty)', start: 1, end: 500 },
+      'B': { name: 'Zone B (UniMall/Visitor)', start: 501, end: 1000 },
+      'C': { name: 'Zone C (Student Cars)', start: 1001, end: 1500 },
+      'D': { name: 'Zone D (2-Wheelers)', start: 1501, end: 2000 }
+    };
+
+    // State Variables
+    let currentZone = 'C';
+    let currentBatchPage = 1; // 1 to 10 (10 pages * 50 = 500 slots per zone)
+    let selectedSlotNumber = null;
+    let totalRevenue = 0;
+
+    // Array of currently parked vehicles
+    let parkedVehicles = [];
+
+    // ==========================================
+    // STEP 1: INITIALIZE THE APPLICATION
+    // ==========================================
+    function initializeSystem() {
+      // 1. Load saved vehicles & revenue from localStorage
+      let savedVehicles = localStorage.getItem('lpu_parked_vehicles_2000');
+      let savedRevenue = localStorage.getItem('lpu_total_revenue_2000');
+
+      if (savedVehicles) {
+        parkedVehicles = JSON.parse(savedVehicles);
+      } else {
+        // Add sample demo vehicles across different zones
+        addSampleDemoVehicles();
+      }
+
+      if (savedRevenue) {
+        totalRevenue = parseInt(savedRevenue, 10);
+      }
+
+      // 2. Render all components
+      renderCurrentZoneSlots();
+      renderTable();
+      updateDashboardStats();
+    }
+
+    // Realistic sample demo entries for college evaluation
+    function addSampleDemoVehicles() {
+      parkedVehicles = [
+        {
+          id: 'LPU-101',
+          slotNum: 1001,
+          zone: 'C',
+          driverName: 'Aarav Sharma',
+          regRollNo: '12104589',
+          userType: 'Student',
+          vehicleType: '4-Wheeler',
+          plateNumber: 'PB 08 CD 4321',
+          campusGate: 'BH/GH Hostel Ground',
+          inTime: '08:45 AM',
+          fee: 0
+        },
+        {
+          id: 'LPU-102',
+          slotNum: 15,
+          zone: 'A',
+          driverName: 'Dr. Gurpreet Kaur',
+          regRollNo: 'FAC-7812',
+          userType: 'Faculty',
+          vehicleType: '4-Wheeler',
+          plateNumber: 'PB 09 EF 9901',
+          campusGate: 'Block 34 (Academic)',
+          inTime: '09:00 AM',
+          fee: 0
+        },
+        {
+          id: 'LPU-103',
+          slotNum: 550,
+          zone: 'B',
+          driverName: 'Vikram Sethi',
+          regRollNo: '9876543210',
+          userType: 'Visitor',
+          vehicleType: '4-Wheeler',
+          plateNumber: 'DL 01 AB 8811',
+          campusGate: 'UniMall Entrance',
+          inTime: '09:30 AM',
+          fee: 20
+        },
+        {
+          id: 'LPU-104',
+          slotNum: 1512,
+          zone: 'D',
+          driverName: 'Manpreet Singh',
+          regRollNo: '12211902',
+          userType: 'Student',
+          vehicleType: '2-Wheeler',
+          plateNumber: 'PB 08 BX 7762',
+          campusGate: 'Gate 2 (Law Gate)',
+          inTime: '10:05 AM',
+          fee: 0
+        }
+      ];
+      totalRevenue = 20;
+      saveDataToLocalStorage();
+    }
+
+    // Helper: Find vehicle parked at a specific slot number
+    function getVehicleAtSlot(slotNumber) {
+      return parkedVehicles.find(function(v) { return v.slotNum === slotNumber; });
+    }
+
+    // Helper: Find which zone a slot belongs to
+    function getZoneForSlot(slotNum) {
+      if (slotNum <= 500) return 'A';
+      if (slotNum <= 1000) return 'B';
+      if (slotNum <= 1500) return 'C';
+      return 'D';
+    }
+
+    // ==========================================
+    // STEP 2: RENDER BATCHED SLOTS (50 AT A TIME)
+    // ==========================================
+    function renderCurrentZoneSlots() {
+      let gridContainer = document.getElementById('slotsGrid');
+      gridContainer.innerHTML = '';
+
+      let zoneConfig = ZONES[currentZone];
+      // Calculate start and end slot for this 50-slot page
+      let pageOffset = (currentBatchPage - 1) * SLOTS_PER_PAGE;
+      let startSlot = zoneConfig.start + pageOffset;
+      let endSlot = Math.min(startSlot + SLOTS_PER_PAGE - 1, zoneConfig.end);
+
+      // Update page indicator text
+      let totalPages = Math.ceil(SLOTS_PER_ZONE / SLOTS_PER_PAGE); // 10
+      document.getElementById('pageIndicator').innerText = 
+        'Slots ' + startSlot + ' - ' + endSlot + ' (Page ' + currentBatchPage + ' of ' + totalPages + ')';
+
+      document.getElementById('btnPrevPage').disabled = (currentBatchPage === 1);
+      document.getElementById('btnNextPage').disabled = (currentBatchPage === totalPages);
+
+      // Highlight active zone tab
+      ['A', 'B', 'C', 'D'].forEach(function(z) {
+        let tab = document.getElementById('tab' + z);
+        if (z === currentZone) {
+          tab.classList.add('active');
+        } else {
+          tab.classList.remove('active');
+        }
+      });
+
+      // Render the 50 slot boxes
+      for (let sNum = startSlot; sNum <= endSlot; sNum++) {
+        let parkedVehicle = getVehicleAtSlot(sNum);
+        let isOccupied = !!parkedVehicle;
+
+        let slotDiv = document.createElement('div');
+        let classes = 'slot-box ' + (isOccupied ? 'slot-occupied' : 'slot-vacant');
+        if (selectedSlotNumber === sNum) {
+          classes += ' selected';
+        }
+        slotDiv.className = classes;
+
+        if (isOccupied) {
+          slotDiv.innerHTML = '<strong>#' + sNum + '</strong><br><span style="font-size:10px;">' + parkedVehicle.plateNumber.split(' ').slice(-1) + '</span>';
+        } else {
+          slotDiv.innerHTML = '<strong>#' + sNum + '</strong><br><span style="font-size:10px;">Free</span>';
+        }
+
+        // Click on a slot box
+        (function(slot) {
+          slotDiv.onclick = function() {
+            if (isOccupied) {
+              showNotification('Slot #' + slot + ' is occupied by ' + parkedVehicle.plateNumber + ' (' + parkedVehicle.driverName + ')', '#dc3545');
+            } else {
+              selectedSlotNumber = slot;
+              document.getElementById('targetZone').value = currentZone;
+              document.getElementById('preselectedBayLabel').innerText = 'Slot #' + slot + ' (Zone ' + currentZone + ')';
+              showNotification('Pre-selected Slot #' + slot + ' for vehicle entry!', '#28a745');
+              renderCurrentZoneSlots();
+            }
+          };
+        })(sNum);
+
+        gridContainer.appendChild(slotDiv);
+      }
+    }
+
+    // Switch between Zones A, B, C, D
+    function switchZone(zoneKey) {
+      currentZone = zoneKey;
+      currentBatchPage = 1;
+      document.getElementById('targetZone').value = zoneKey;
+      renderCurrentZoneSlots();
+    }
+
+    // Change batch page (prev/next)
+    function changePage(direction) {
+      currentBatchPage += direction;
+      renderCurrentZoneSlots();
+    }
+
+    // Jump directly to any slot between 1 and 2000
+    function jumpToSlot() {
+      let inputVal = parseInt(document.getElementById('jumpSlotInput').value, 10);
+      if (isNaN(inputVal) || inputVal < 1 || inputVal > TOTAL_SLOTS) {
+        showNotification('Please enter a valid slot number between 1 and 2000', '#dc3545');
+        return;
+      }
+
+      // Determine zone of requested slot
+      let targetZone = getZoneForSlot(inputVal);
+      currentZone = targetZone;
+      document.getElementById('targetZone').value = targetZone;
+
+      // Determine page within that zone
+      let zoneStart = ZONES[targetZone].start;
+      let slotIndexInZone = inputVal - zoneStart; // 0 to 499
+      currentBatchPage = Math.floor(slotIndexInZone / SLOTS_PER_PAGE) + 1;
+
+      // Select it if free
+      let isOcc = getVehicleAtSlot(inputVal);
+      if (!isOcc) {
+        selectedSlotNumber = inputVal;
+        document.getElementById('preselectedBayLabel').innerText = 'Slot #' + inputVal + ' (Zone ' + currentZone + ')';
+      }
+
+      renderCurrentZoneSlots();
+      showNotification('Jumped to Slot #' + inputVal + ' in ' + ZONES[targetZone].name, '#007bff');
+    }
+
+    // Automatically suggest zone based on user/vehicle dropdown
+    function autoSelectZoneByCategory() {
+      let uType = document.getElementById('userType').value;
+      let vType = document.getElementById('vehicleType').value;
+
+      if (vType === '2-Wheeler') {
+        switchZone('D'); // 2-Wheeler Plaza
+      } else if (uType === 'Faculty') {
+        switchZone('A'); // Block 34 Faculty
+      } else if (uType === 'Visitor') {
+        switchZone('B'); // UniMall Visitor
+      } else {
+        switchZone('C'); // Student cars
+      }
+    }
+
+    // ==========================================
+    // STEP 3: HANDLE PARKING FORM SUBMISSION
+    // ==========================================
+    function handleParkingSubmit(event) {
+      event.preventDefault();
+
+      let chosenZone = document.getElementById('targetZone').value;
+      let zoneConfig = ZONES[chosenZone];
+      let targetSlot = null;
+
+      // 1. If user hand-picked a slot in the matching zone
+      if (selectedSlotNumber && selectedSlotNumber >= zoneConfig.start && selectedSlotNumber <= zoneConfig.end) {
+        if (!getVehicleAtSlot(selectedSlotNumber)) {
+          targetSlot = selectedSlotNumber;
+        }
+      }
+
+      // 2. If no valid hand-picked slot, find first available slot in that zone
+      if (!targetSlot) {
+        for (let s = zoneConfig.start; s <= zoneConfig.end; s++) {
+          if (!getVehicleAtSlot(s)) {
+            targetSlot = s;
+            break;
+          }
+        }
+      }
+
+      // Check if zone is full
+      if (!targetSlot) {
+        showNotification(zoneConfig.name + ' is completely full! Try another zone.', '#dc3545');
+        return;
+      }
+
+      // Read form values
+      let name = document.getElementById('driverName').value.trim();
+      let roll = document.getElementById('regRollNo').value.trim();
+      let type = document.getElementById('userType').value;
+      let vType = document.getElementById('vehicleType').value;
+      let plate = document.getElementById('plateNumber').value.trim().toUpperCase();
+      let gate = document.getElementById('campusGate').value;
+
+      // Duplicate check
+      let alreadyParked = parkedVehicles.some(function(v) { return v.plateNumber === plate; });
+      if (alreadyParked) {
+        showNotification('Vehicle ' + plate + ' is already parked on campus!', '#dc3545');
+        return;
+      }
+
+      // Fee calculation
+      let fee = (type === 'Visitor') ? 20 : 0;
+      if (fee > 0) {
+        totalRevenue += fee;
+      }
+
+      let currentTime = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+      let slipId = 'LPU-' + Math.floor(1000 + Math.random() * 9000);
+
+      let newVehicle = {
+        id: slipId,
+        slotNum: targetSlot,
+        zone: chosenZone,
+        driverName: name,
+        regRollNo: roll,
+        userType: type,
+        vehicleType: vType,
+        plateNumber: plate,
+        campusGate: gate,
+        inTime: currentTime,
+        fee: fee
+      };
+
+      parkedVehicles.push(newVehicle);
+      selectedSlotNumber = null;
+      document.getElementById('preselectedBayLabel').innerText = 'Auto (Next Available)';
+
+      saveDataToLocalStorage();
+      renderCurrentZoneSlots();
+      renderTable();
+      updateDashboardStats();
+
+      // Reset form
+      document.getElementById('parkingForm').reset();
+      document.getElementById('targetZone').value = chosenZone;
+
+      // Show receipt modal
+      showReceiptModal(newVehicle);
+      showNotification('Vehicle successfully parked at Slot #' + targetSlot + ' (' + zoneConfig.name + ')', '#28a745');
+    }
+
+    // ==========================================
+    // STEP 4: RENDER VEHICLES TABLE
+    // ==========================================
+    function renderTable(filterList) {
+      let tbody = document.getElementById('vehicleTableBody');
+      let noData = document.getElementById('noDataMessage');
+      let list = filterList || parkedVehicles;
+
+      tbody.innerHTML = '';
+
+      if (list.length === 0) {
+        noData.style.display = 'block';
+        document.getElementById('activeCountBadge').innerText = '0 Vehicles';
+        return;
+      }
+
+      noData.style.display = 'none';
+      document.getElementById('activeCountBadge').innerText = list.length + ' Vehicles';
+
+      list.forEach(function(vehicle, index) {
+        let tr = document.createElement('tr');
+
+        let badgeClass = 'badge-student';
+        if (vehicle.userType === 'Faculty') badgeClass = 'badge-faculty';
+        if (vehicle.userType === 'Visitor') badgeClass = 'badge-visitor';
+
+        tr.innerHTML = `
+          <td><strong>${index + 1}</strong></td>
+          <td><span style="font-weight:bold; color:#e35205;">Slot #${vehicle.slotNum}</span></td>
+          <td><strong>Zone ${vehicle.zone}</strong></td>
+          <td>${vehicle.driverName}</td>
+          <td><code>${vehicle.regRollNo}</code></td>
+          <td><strong>${vehicle.plateNumber}</strong><br><small style="color:#777;">${vehicle.vehicleType}</small></td>
+          <td><span class="badge ${badgeClass}">${vehicle.userType}</span></td>
+          <td>${vehicle.campusGate}</td>
+          <td>${vehicle.inTime}</td>
+          <td>
+            <button class="btn-action" onclick="exitVehicle('${vehicle.plateNumber}')">Exit</button>
+          </td>
+        `;
+
+        tbody.appendChild(tr);
+      });
+    }
+
+    // ==========================================
+    // STEP 5: VEHICLE EXIT & RELEASE SLOT
+    // ==========================================
+    function exitVehicle(plate) {
+      let vehicleIndex = parkedVehicles.findIndex(function(v) { return v.plateNumber === plate; });
+      if (vehicleIndex === -1) return;
+
+      let vehicle = parkedVehicles[vehicleIndex];
+
+      // Remove vehicle
+      parkedVehicles.splice(vehicleIndex, 1);
+
+      saveDataToLocalStorage();
+      renderCurrentZoneSlots();
+      renderTable();
+      updateDashboardStats();
+
+      showNotification('Vehicle ' + plate + ' checked out. Slot #' + vehicle.slotNum + ' is now vacant.', '#e35205');
+    }
+
+    // ==========================================
+    // STEP 6: SEARCH & FILTER
+    // ==========================================
+    function filterVehicles() {
+      let query = document.getElementById('searchInput').value.toLowerCase().trim();
+
+      if (!query) {
+        renderTable();
+        return;
+      }
+
+      let filtered = parkedVehicles.filter(function(v) {
+        return v.plateNumber.toLowerCase().includes(query) ||
+               v.driverName.toLowerCase().includes(query) ||
+               v.regRollNo.toLowerCase().includes(query) ||
+               ('slot #' + v.slotNum).includes(query) ||
+               v.slotNum.toString() === query ||
+               ('zone ' + v.zone.toLowerCase()).includes(query);
+      });
+
+      renderTable(filtered);
+    }
+
+    function resetSearch() {
+      document.getElementById('searchInput').value = '';
+      renderTable();
+    }
+
+    // ==========================================
+    // STEP 7: RECEIPT MODAL AND STATS CALCULATION
+    // ==========================================
+    function showReceiptModal(v) {
+      document.getElementById('rcptSlipId').innerText = v.id;
+      document.getElementById('rcptBay').innerText = 'Slot #' + v.slotNum + ' (' + ZONES[v.zone].name + ')';
+      document.getElementById('rcptDriver').innerText = v.driverName;
+      document.getElementById('rcptRoll').innerText = v.regRollNo;
+      document.getElementById('rcptPlate').innerText = v.plateNumber;
+      document.getElementById('rcptCategory').innerText = v.userType;
+      document.getElementById('rcptGate').innerText = v.campusGate;
+      document.getElementById('rcptTime').innerText = v.inTime;
+      document.getElementById('rcptFee').innerText = (v.fee === 0) ? '₹0.00 (LPU Free Entry)' : '₹' + v.fee + '.00 (Visitor Tariff)';
+
+      document.getElementById('receiptModal').style.display = 'flex';
+    }
+
+    function closeReceipt() {
+      document.getElementById('receiptModal').style.display = 'none';
+    }
+
+    function updateDashboardStats() {
+      let occupiedCount = parkedVehicles.length;
+      let availableCount = TOTAL_SLOTS - occupiedCount;
+
+      document.getElementById('statTotal').innerText = TOTAL_SLOTS;
+      document.getElementById('statOccupied').innerText = occupiedCount;
+      document.getElementById('statAvailable').innerText = availableCount;
+      document.getElementById('statRevenue').innerText = '₹' + totalRevenue;
+
+      // Calculate occupancy per zone (out of 500 each)
+      ['A', 'B', 'C', 'D'].forEach(function(z) {
+        let zoneOcc = parkedVehicles.filter(function(v) { return v.zone === z; }).length;
+        let percent = (zoneOcc / SLOTS_PER_ZONE) * 100;
+        
+        document.getElementById('zoneOccupancy' + z).innerText = zoneOcc + ' / ' + SLOTS_PER_ZONE;
+        document.getElementById('zoneBar' + z).style.width = percent + '%';
+      });
+    }
+
+    function saveDataToLocalStorage() {
+      localStorage.setItem('lpu_parked_vehicles_2000', JSON.stringify(parkedVehicles));
+      localStorage.setItem('lpu_total_revenue_2000', totalRevenue.toString());
+    }
+
+    function showNotification(message, bgColor) {
+      let toast = document.getElementById('notification');
+      toast.innerText = message;
+      toast.style.background = bgColor || '#28a745';
+      toast.style.display = 'block';
+
+      setTimeout(function() {
+        toast.style.display = 'none';
+      }, 3200);
+    }
+
+    function updateFeeInfo() {
+      let type = document.getElementById('userType').value;
+      if (type === 'Visitor') {
+        showNotification('Visitor parking fee is ₹20 upon entry.', '#e35205');
+      }
+    }
+
+    // Start everything on page load
+    window.onload = function() {
+      initializeSystem();
+    };
+   </script>
+</body>
+</html>  
